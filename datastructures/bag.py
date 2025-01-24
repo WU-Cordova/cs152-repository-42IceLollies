@@ -39,7 +39,22 @@ class Bag(IBag[T]):
 
 
     def remove(self, item: T) -> None:
-        raise NotImplementedError("remove method not implemented")
+        """Removes an instance of a given item from the bag, raises a value error if the item is not in the bag, or no item was specified
+        Arguments: 
+            item: specified item to be removed from the bag
+        Returns: 
+            void
+        """
+        if item not in self.__bag__ or item is None:
+            raise ValueError
+        
+        # if the number of items in the bag is greater than one, decreases the count
+        if self.__bag__[item] > 1:
+            self.__bag__[item] -= 1
+        # otherwise, it takes the item out of the dictionary
+        else:
+            del self.__bag__[item]
+
 
     def count(self, item: T) -> int:
         """Returns the number of copies of an item stored as its value, zero if item is not in the bag
