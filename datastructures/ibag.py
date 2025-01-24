@@ -7,7 +7,6 @@ class IBag(ABC, Generic[T]):
     """
     Interface for a Bag (MultiSet) data structure.
     """
-
     @abstractmethod
     def __init__(self, *items: Optional[Iterable[T]]) -> None:
         """
