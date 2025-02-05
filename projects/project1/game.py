@@ -1,5 +1,6 @@
 from projects.project1.multideck import Multideck
 from projects.project1.player import Player
+from projects.project1.card import Card
 
 class Game:
 
@@ -29,10 +30,11 @@ class Game:
         # ========================
         # Initial Deal - 2 cards to player and two to dealer
         for player in self.__players:
-            player.add(2*self.__Deck.deal())
+            player.add(self.__deck.deal())
+            player.add(self.__deck.deal())
             print(player.hand)
 
-        # Show one card from player's hand - ask if they want to hit or stay
+        # Show one card from dealer's hand - ask if they want to hit or stay
         # Hit -> deal card, check if over 21
         # reveal cards 
 

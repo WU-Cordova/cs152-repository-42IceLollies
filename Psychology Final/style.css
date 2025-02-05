@@ -1,0 +1,61 @@
+body {
+  background-color: black;
+  padding: 0;
+  margin: 0;
+}
+
+p {
+  color: white;
+  font-family: "Quicksand", sans-serif;
+}
+
+p.divOne {
+  color: white;
+  font-size: 50px;
+  font-family: "Quicksand", sans-serif;
+}
+
+button.divOne {
+  background-color: rgb(43, 43, 43);
+  color: white;
+  float: left;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  font-family: "Quicksand", sans-serif;
+}
+
+img.divOne {
+  position: absolute;
+}
+
+.instructions {
+  background-color: rgb(58, 6, 71);
+  color: white;
+  font-size: 20px;
+  padding-right: 5%;
+  margin-right: 10%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: "Times New Roman", Times, serif;
+}
+
+img {
+  width: 50%;
+  border: 2px solid black;
+}
+
+.divTwo {
+  background-color: rgb(43, 43, 43);
+  color: white;
+  font-family: "Quicksand", sans-serif;
+  font-size: 20px;
+  text-align: center;
+  padding: 5%;
+  position: absolute;
+  top: 25%;
+  margin-right: 10%;
+  margin-left: 10%;
+  border-radius: 3px;
+}

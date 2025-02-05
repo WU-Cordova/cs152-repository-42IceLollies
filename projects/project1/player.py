@@ -18,10 +18,8 @@ class Player:
     def name(self):
         return self.__name
     
-    @hand.setter
     def add(self, new_card: Card):
         self.__hand.append(new_card)
 
-    @hand.setter
     def clear(self):
         self.__hand = []

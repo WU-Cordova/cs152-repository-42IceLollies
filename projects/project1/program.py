@@ -4,11 +4,12 @@ from projects.project1.game import Game
 # DOCSTRINGS
 # TYPEHINTS
 # I think we can't use a dataclass as a key
+# can make the card class enumerated? hashable??
 
 def main():
     
     print("Hello, World!")
-    game = Game(["Spock", "Mork", "Data"])
+    game = Game(["Jimothy"])
     game.play_game()
 
    

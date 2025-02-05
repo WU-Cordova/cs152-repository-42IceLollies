@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>The Brain: Your Roll</title>
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <p id="needToRoll">You need to roll a __ or above to use the.</p>
+    <p id="roll">Your roll: (+ num)</p>
+    <p id="passFail">You Passed! || You Failed.</p>
+    <!--Maybe include a progress bar thing like on sheet if there's time-->
+    <p>
+      Best choice: was the foot because the foot doesn't think and the foot just
+      <br />
+      sits there and really if anything were to happen to you, there's no time
+      <br />
+      to think, the best hope is to sit there and hope your foot sings happy
+      <br />
+      birthday the next time you step on a lego. Thank you for listening to my
+      <br />
+      Ted Talk.
+    </p>
+    <button>Next</button>
+
+    <script>
+      //can be deleted later
+      //======================================================
+      //setPoints();
+      console.log(localStorage.getItem("choice"));
+      console.log(localStorage.getItem("numPoints"));
+
+      window.addEventListener("click", function () {
+        //window.location.href = "endPage.html";
+        switchPage("select.html", true);
+        localStorage.setItem("choice", null);
+      });
+    </script>
+    <script src="rollInfo.js"></script>
+    <script src="/script.js"></script>
+  </body>
+</html>
