@@ -2,21 +2,21 @@ from projects.project1.multideck import Multideck
 from projects.project1.player import Player
 from projects.project1.card import Card
 import time
-# import input
 
 class Game:
 
-    def __init__(self, player_names):
-        """initializes a new game """
+    def __init__(self, player_names)-> None:
+        """initializes a new game with player list and multideck"""
         self.__players = [Player("Dealer")] + [Player(player_name) for player_name in player_names]
         self.__deck = Multideck()
 
-    def check_wins(self):
-        """checks if the player has won"""
+    def check_wins(self) -> None:
+        """checks which player has won and prints out a win message"""
         player_score = self.calc_score(self.__players[1])
         dealer_score = self.calc_score(self.__players[0])
+
         # prints out who won or if the game was a tie
-        if player_score>dealer_score and player_score<=21:
+        if player_score>dealer_score:
             print(f"{self.__players[1].name} wins!!") 
         elif player_score == dealer_score:
             print("It's a tie!")
@@ -24,8 +24,8 @@ class Game:
             print("The dealer won.")
         
 
-    def calc_score(self, player):
-        """calculates the current score of a certain player's hand"""
+    def calc_score(self, player: Player) -> int:
+        """calculates the current score of a certain player's revealed hand"""
         score = 0
         aces = 0
         # goes through the cards that are flipped face-up in a player's hand
@@ -34,11 +34,11 @@ class Game:
                 try:
                     # tries to add the value of the card
                     score+= card.value
-                    # but in the case of the ace, it saves it for later
+                    # but in the case of the ace (whose value is represented as a tuple: (1,11)), it saves the counting for later
                 except TypeError:
                     aces += 1
         # after counting the other cards, program counts up the aces
-        # the value for each is 11, until 11 would make them go over 21, then the value is one
+        # the value for each is 11, until 11 would make player go over 21, then the value is one
         if aces>0:
             # adding 11s
             while score < (21-11) and aces>0:
@@ -47,11 +47,12 @@ class Game:
             # adding 1s
             while aces>0:
                 score+=1
+                aces -=1
 
         return score
     
 
-    def print_cards(self, player):
+    def print_cards(self, player:Player) -> None:
         """prints the cards in a given player's hand"""
         print(f"{player.name}'s hand: ")
         for card in player.hand:
@@ -62,24 +63,27 @@ class Game:
             
 
 
-    def play_game(self):
-        """facilitates taking turns and drawing cards/scoring"""
+    def play_game(self) -> None:
+        """carries out flow of gameplay and recursive rounds"""
+
+        # set player's name to not Jimothy
+        self.__players[1].name = input("Enter player name: ")
 
         # Initial Deal - 2 cards to player and two to dealer
         for player in self.__players:
             player.add(self.__deck.deal(), True)
+            # Keeps dealer's second card face down
             player.add(self.__deck.deal(), False if player.name == "Dealer" else True)
             self.print_cards(player)
             
             
-        # player hits/stays
+        # player hits or stays as desired or until they bust
         hit = 1
-        while hit:
-            # takes user's input to either hit or stay
+        while hit and self.calc_score(self.__players[1]) <=21:
+            # takes user's input to either hit or stay - asks again if it doesn't recognize response
             decision= input("Would you like to hit or stay? ")
             while decision not in ["hit", "stay"]:
-                decision = input("Please enter either \"hit\" or \"stay\":")
-                
+                decision = input("Please enter either \"hit\" or \"stay\": ")
             if decision == "hit":
                 hit = True
             elif decision == "stay":
@@ -91,31 +95,42 @@ class Game:
                 player.add(self.__deck.deal(), True)
                 self.print_cards(player)
                 if self.calc_score(player) > 21:
-                    print("Busted! You lose.")
+                    print(f"Busted! {player.name} loses.")
                     break
             
 
-        # Dealer Draws
-        dealer = self.__players[0]
-        dealer.hand[1].flip()
-        while self.calc_score(dealer) < 17:
-            dealer.add(self.__deck.deal(), True)
-        self.print_cards(dealer)
+        # Dealer Draws until they have a score of 17 or higher, but over 21, they bust
+        if self.calc_score(self.__players[1])<=21:
+            dealer = self.__players[0]
+            # flips the dealer's hidden card
+            dealer.hand[1].flip()
+            while self.calc_score(dealer) < 17:
+                dealer.add(self.__deck.deal(), True)
+            
+            self.print_cards(dealer)
 
-
-        # Check if player's hand is less than 21 and higher than the dealer to win
-        self.check_wins()
+            # if the dealer busts, the player wins the game
+            if self.calc_score(dealer)>21:
+                print(f"Dealer Busted! {self.__players[1].name} wins!")
+            else: 
+                # If no one busted, check win based on score comparison
+                self.check_wins()
+        else:
+            # case for if player busted
+            self.print_cards(self.__players[0])
+            print("Dealer wins")
 
         # play again or quit?
-        if input("Enter 'again' to play again. ") == "again":
+        if input("\nEnter 'again' to play again. ") == "again":
             # clears all players' hands
             for player in self.__players:
                 player.clear()
-
             # creates a new multideck
             self.__deck = Multideck()
-
+            # calls method again to make a new round
             self.play_game()
+        else:
+            print(f"\nThanks for playing, {self.__players[1].name}!")
 
             
 
