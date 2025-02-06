@@ -7,7 +7,7 @@ from datastructures.bag import Bag
 class Multideck:
     # creates a base deck which belongs to the class - to be copied into specific game decks
     suits = ["diamonds", "hearts", "spades", "clubs"]
-    faces = [i for i in range(2,10)] + [i for i in['ace', 'jack', 'queen', 'king']]
+    faces = [i for i in range(2,10)] + [i for i in['A', 'J', 'Q', 'K']]
     vals = [i for i in range(2,10)] + [i for i in [(1,11), 10,10,10]]
    
 
@@ -18,7 +18,7 @@ class Multideck:
         self.__num_decks = random.choice([2,4,6,8])
         self.__multideck = Bag()
         for i in range(self.__num_decks):
-            [self.__multideck.add(Card(Multideck.faces[i], Multideck.vals[i], Multideck.suits[i//len(Multideck.faces)]))  for i in range(len(Multideck.faces))]
+            [self.__multideck.add(Card(Multideck.faces[i], Multideck.vals[i], Multideck.suits[i//(len(Multideck.faces)//4)]))  for i in range(len(Multideck.faces))]
 
 
     

@@ -18,7 +18,9 @@ class Player:
     def name(self):
         return self.__name
     
-    def add(self, new_card: Card):
+    def add(self, new_card: Card, flip:bool):
+        if flip:
+            new_card.flip()
         self.__hand.append(new_card)
 
     def clear(self):

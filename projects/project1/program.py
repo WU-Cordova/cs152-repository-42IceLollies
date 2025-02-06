@@ -3,12 +3,10 @@ from projects.project1.game import Game
 # TYPE HINTS
 # DOCSTRINGS
 # TYPEHINTS
-# I think we can't use a dataclass as a key
-# can make the card class enumerated? hashable??
+# make it so that the dealer doesn't draw and stuff after the player busts.
 
 def main():
     
-    print("Hello, World!")
     game = Game(["Jimothy"])
     game.play_game()
 
