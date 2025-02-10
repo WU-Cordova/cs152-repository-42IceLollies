@@ -7,7 +7,9 @@ from projects.project1.game import Game
 
 def main():
     
-    game = Game(["Jimothy"])
+    # set player's name to not Jimothy
+    name= input("Enter player name: ")
+    game = Game([name])
     game.play_game()
 
    

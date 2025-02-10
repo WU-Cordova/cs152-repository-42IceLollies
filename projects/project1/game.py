@@ -58,7 +58,7 @@ class Game:
         for card in player.hand:
             print(card)
             time.sleep(0.3)
-        print(f"Score: {self.calc_score(player)} \n\n")
+        print(f"Score: {player.score} \n\n")
         
             
 
@@ -66,20 +66,18 @@ class Game:
     def play_game(self) -> None:
         """carries out flow of gameplay and recursive rounds"""
 
-        # set player's name to not Jimothy
-        self.__players[1].name = input("Enter player name: ")
-
         # Initial Deal - 2 cards to player and two to dealer
         for player in self.__players:
             player.add(self.__deck.deal(), True)
             # Keeps dealer's second card face down
             player.add(self.__deck.deal(), False if player.name == "Dealer" else True)
+            player.score = self.calc_score(player)
             self.print_cards(player)
             
             
         # player hits or stays as desired or until they bust
         hit = 1
-        while hit and self.calc_score(self.__players[1]) <=21:
+        while hit and self.__players[1].score <=21:
             # takes user's input to either hit or stay - asks again if it doesn't recognize response
             decision= input("Would you like to hit or stay? ")
             while decision not in ["hit", "stay"]:
@@ -93,30 +91,34 @@ class Game:
                 # deals to the player, prints out their hand, and check if their score is over 21
                 player = self.__players[1]
                 player.add(self.__deck.deal(), True)
+                player.score = self.calc_score(player)
                 self.print_cards(player)
-                if self.calc_score(player) > 21:
+                if player.score> 21:
                     print(f"Busted! {player.name} loses.")
                     break
             
 
         # Dealer Draws until they have a score of 17 or higher, but over 21, they bust
-        if self.calc_score(self.__players[1])<=21:
+        if self.__players[1].score<=21:
             dealer = self.__players[0]
             # flips the dealer's hidden card
             dealer.hand[1].flip()
-            while self.calc_score(dealer) < 17:
+            dealer.score = self.calc_score(dealer)
+            while dealer.score < 17:
                 dealer.add(self.__deck.deal(), True)
+                dealer.score = self.calc_score(dealer)
             
             self.print_cards(dealer)
 
             # if the dealer busts, the player wins the game
-            if self.calc_score(dealer)>21:
+            if dealer.score>21:
                 print(f"Dealer Busted! {self.__players[1].name} wins!")
             else: 
                 # If no one busted, check win based on score comparison
                 self.check_wins()
         else:
-            # case for if player busted
+            # case fo
+            # r if player busted
             self.print_cards(self.__players[0])
             print("Dealer wins")
 
