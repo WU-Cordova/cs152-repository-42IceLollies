@@ -66,6 +66,7 @@ class Array(IArray[T]):
                 raise IndexError("Tee hee, index out of bounds. >:P")
             
         elif isinstance(index, slice):
+
             if in_range(index.start) and in_range(index.stop):
                 return Array(starting_sequence=self._elements[index.start: index.stop: index.step], data_type = self._data_type)
         
@@ -96,7 +97,7 @@ class Array(IArray[T]):
         # perform resizing of memory size if necesary 
         if self._element_count == self._capacity:
             # creates an array with more memory space and adds it to the initial one
-            expansion = np.array([0 for i in range(self._capacity)])
+            expansion = np.array([self._data_type() for i in range(self._capacity)])
             print(expansion)
             self._elements = np.concatenate((self._elements, expansion))
             self._capacity*=2
