@@ -68,10 +68,11 @@ class Array2D(IArray2D[T]):
     def __init__(self, starting_sequence: Sequence[Sequence[T]]=[[]], data_type=object) -> None:
         """Initializes an instance of the 2D array given initial sequence and data type"""
 
+        print(str(starting_sequence))
         # raise the value errors
         if not isinstance(starting_sequence, Sequence):
             # wrong data type
-            raise ValueError("must be a sequence of sequences")
+            raise ValueError("Starting sequence is not a sequence")
         for curr_sequence in starting_sequence:
             # if it's not a sequence
             if not isinstance(curr_sequence, Sequence):
@@ -81,8 +82,8 @@ class Array2D(IArray2D[T]):
                 raise ValueError("Elements of starting sequence are not all of the same length.")
 
         # instance variables
-        self.__num_columns = len(starting_sequence)
-        self.__num_rows = len(starting_sequence[0])
+        self.__num_columns = len(starting_sequence[0])
+        self.__num_rows = len(starting_sequence)
         self.__data_type = data_type
         self.__array = Array([data_type() for _ in range(self.__num_rows) for _ in range(self.__num_columns)], data_type = data_type)
         
@@ -91,11 +92,11 @@ class Array2D(IArray2D[T]):
         idx = 0
         for row in range(self.__num_rows):
             for col in range(self.__num_columns):
-                el = starting_sequence[row][col]
-                if not isinstance(el, data_type):
+                elem = starting_sequence[row][col]
+                if not isinstance(elem, data_type):
                     # raises TypeError if an element of the starting_sequence is of an incorrect type
-                    raise TypeError("2D Array element of incorrect type.")
-                self.__array[idx] = el
+                    raise ValueError("2D Array element of incorrect type.")
+                self.__array[idx] = elem
                 idx += 1
 
     @staticmethod
