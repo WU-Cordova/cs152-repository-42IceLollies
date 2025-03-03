@@ -68,7 +68,7 @@ class Array2D(IArray2D[T]):
     def __init__(self, starting_sequence: Sequence[Sequence[T]]=[[]], data_type=object) -> None:
         """Initializes an instance of the 2D array given initial sequence and data type"""
 
-        print(str(starting_sequence))
+        # print(str(starting_sequence))
         # raise the value errors
         if not isinstance(starting_sequence, Sequence):
             # wrong data type
@@ -105,7 +105,7 @@ class Array2D(IArray2D[T]):
         # creates a starting sequence of the data type and converts it into a 2D array
         start_seq = [[data_type() for _ in range(rows)] for _ in range(cols)]
         arr =  Array2D(starting_sequence = start_seq, data_type = data_type)
-        print(arr)
+        # print(arr)
         return arr
 
 
@@ -135,6 +135,20 @@ class Array2D(IArray2D[T]):
     
     def __repr__(self) -> str: 
         return f'Array2D {self.__num_rows} Rows x {self.__num_columns} Columns, items: {str(self)}'
+    
+    
+    def __eq__(self, other:Array2D) -> bool:
+        """returns true if all elements of current array and another array are equal and dimensions are equal"""
+        if self.__num_columns == len(other) and self.__num_rows == len(other[0]):
+            for i in range(self.__num_columns):
+                for j in range(self.__num_rows):
+                    if self[i][j] != other[i][j]:
+                        return False
+            
+            return True
+        else:
+            return False
+
 
 
 if __name__ == '__main__':
