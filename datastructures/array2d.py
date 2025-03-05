@@ -9,10 +9,6 @@ from datastructures.iarray2d import IArray2D, T
 
 class Array2D(IArray2D[T]):
 
-# COMMENTS 
-# THROW ERRORS!!!!!!!
-# Make the row class variables consistend (with leading underscores)
-
 
 # ============================================================================================================================
     class Row(IArray2D.IRow[T]):

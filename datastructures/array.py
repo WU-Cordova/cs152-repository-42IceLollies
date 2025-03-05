@@ -153,7 +153,7 @@ class Array(IArray[T]):
     def pop_front(self) -> None:
         """Deletes and returns the first item from an array"""
         item = self._elements[0]
-        self.__delitem__[0]
+        self.__delitem__(0)
         return item
 
 

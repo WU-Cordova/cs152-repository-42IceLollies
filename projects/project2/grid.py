@@ -1,22 +1,27 @@
 from projects.project2.cell import Cell
 from datastructures.array2d import Array2D
-from datastructures.array import Array
 import copy
 
 class Grid:
 
-    def __init__(self,  start_config: list[list[bool]]):
+    def __init__(self,  start_config: list[list[Cell]]) -> None:
         """creates a grid of cells"""
-        self.width = len(start_config)
-        self.height = len(start_config[0])
-        
-        self.array = Array2D(start_config, Cell)
-        self.grid_history = Array([Grid() for _ in range(5)], Grid)
+
+        # starts from given congiguration or creates a blank board
+        if start_config != None:        
+            self.__array = Array2D(start_config, Cell)
+        else:
+            self.__array = Array2D.empty()
+
+
+    # creates a grid history to test board stagnation
+        self.__grid_history = []
+        self.__stagnate = False
     
 
     def draw(self):
         """Prints out the grid with all its cells to the terminal"""
-        for col in self.array:
+        for col in self.__array:
             # creates a string with "O" for living cells and "X" for dead cells in each row of the grid
             row_str = []
             for cell in col:
@@ -29,55 +34,81 @@ class Grid:
 
         
 
-    def new_generation(self):
+    def new_generation(self) -> None:
         """Calculates all the cell statuses for next generation, and creates a new current grid"""
-        # loop through all the cells in the grid
-        new_grid = copy.deepcopy(self.array)
-        # neighbors = []
+        
+        # loop through all the cells in the grid and makes changes where necessary for the next generation on a copy of the grid
+        new_grid = copy.deepcopy(self.__array)
 
-        for i in range(len(self.array)):
-            for j in range(len(self.array[0])):
+        for i in range(len(self.__array)):
+            for j in range(len(self.__array[0])):
                 live_neighbors = 0
-                # prin
-                # t(i,j)
-                # checks if all orthoganal cells are alive as long as the index is in bounds
-                if i-1 >=0 and self.array[i-1][j].get_living():
-                    # print("left")
-                    live_neighbors+=1
-                if j-1>=0 and self.array[i][j-1].get_living():
-                    # print("top")
-                    live_neighbors +=1
-                if i+1 < (len(self.array)) and self.array[i+1][j].get_living():
-                    # print("right")
-                    live_neighbors+=1
-                if j+1 < (len(self.array[0])) and self.array[i][j+1].get_living():
-                    # print("bottom")
-                    live_neighbors +=1
+                
+                # checks if all adjacent cells are alive as long as the index is in bounds
+                out_of_bounds = []
+                # checks if the top, right, left or bottom are out of bounds
+                if i-1 <0: 
+                    out_of_bounds.append("left")
+                if j-1<0:
+                    out_of_bounds.append("top")
+                if i+1 >= (len(self.__array)):
+                    out_of_bounds.append("right")
+                if j+1 >= (len(self.__array[0])):
+                    out_of_bounds.append("bottom")
+                
+                # checks top right, top and top left corners
+                if not "top" in out_of_bounds:
+                    if not "left" in out_of_bounds and self.__array[i-1][j-1].get_living():
+                        live_neighbors+=1
+                    if self.__array[i][j-1].get_living():
+                        live_neighbors+=1
+                    if not "right" in out_of_bounds and self.__array[i+1][j-1].get_living():
+                        live_neighbors+=1
 
-                # print(live_neighbors)
-                # neighbors.append(live_neighbors)
+                # checks right corner
+                if not "right" in out_of_bounds and self.__array[i+1][j].get_living():
+                    live_neighbors+=1
+
+                # checks left corner
+                if not "left" in out_of_bounds and self.__array[i-1][j].get_living():
+                    live_neighbors+=1
+
+                # checks bottom right, bottom and bottom left corners
+                if not "bottom" in out_of_bounds:
+                    if not "left" in out_of_bounds and self.__array[i-1][j+1].get_living():
+                        live_neighbors+=1
+                    if self.__array[i][j+1].get_living():
+                        live_neighbors+=1
+                    if not "right" in out_of_bounds and self.__array[i+1][j+1].get_living():
+                        live_neighbors+=1
+
+              
                 # changes if a cell is living if the projected status is different from current 
-                if self.array[i][j].project_living(live_neighbors) != self.array[i][j].get_living():
+                if self.__array[i][j].project_living(live_neighbors) != self.__array[i][j].get_living():
                     new_grid[i][j].toggle_living()
         
-        # keeps the grid history to five boards and appends the current board 
-        if len(self.grid_history) >= 5:      
-            self.grid_history[0].remove()
-        self.grid_history.append(self.array)
+        # keeps the grid history to five boards and appends the current board   
+        if len(self.__grid_history) == 5:
+            self.__grid_history.pop(0)
+        self.__grid_history.append(self.__array)
 
-        self.array = new_grid
-        # print(neighbors)
+        # sets current array to the new one and draws it
+        self.__array = new_grid
         self.draw()
 
 
-
-                
-                
+    def get_stagnate(self)-> bool:
+        """getter for the stagnate variable"""
+        return self.__stagnate
                 
                 
     
-    def test_stagnation(self):
-        """"""
+    def test_stagnation(self) -> None:
+        """checks if the grid pattern is repeating and updates object's stagnate value"""
 
-        for arr in :
-            if self.array == arr:
+        for arr in self.__grid_history:
+            if self.__array == arr:
+                self.__stagnate = True
+                print("Grid is stable or repeating.")
+
+        
