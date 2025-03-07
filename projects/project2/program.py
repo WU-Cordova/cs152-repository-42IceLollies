@@ -2,18 +2,16 @@ from projects.project2.grid import Grid
 from projects.project2.game import Game
 
 
-# read in file (optional)
-# change replay to kbhit
 
 def main():
    
 
     # =========randomly seeded game==============
-    game_of_life = Game()
+    # game_of_life = Game()
 
     #========== game seeded from file============
-    # width, height, start = read_file("projects\project2\starter_file.txt")
-    # game_of_life = Game(width, height, start)
+    width, height, start = read_file("projects\project2\starter_file.txt")
+    game_of_life = Game(width, height, start) 
 
 
 
@@ -56,9 +54,9 @@ def read_file(file_name:str, ) -> tuple:
                     elif char == 'X':
                         row.append(True)
                     else:
-                        print(char)
                         raise ValueError("Unexpected cell entry in starter grid")
                 start_list.append(row)
+                
 
 
     starter.close()

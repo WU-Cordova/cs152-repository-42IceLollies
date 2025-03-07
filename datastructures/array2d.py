@@ -123,7 +123,7 @@ class Array2D(IArray2D[T]):
     
     def __len__(self): 
         """Returns a 2D array's number of columns"""
-        return self.__num_columns
+        return self.__num_rows
                                   
     def __str__(self) -> str:            
         return  str([[self.__array[row_idx * self.__num_columns + i] for i in range(self.__num_columns)]for row_idx in range(self.__num_rows)])
@@ -135,9 +135,9 @@ class Array2D(IArray2D[T]):
     
     def __eq__(self, other:Array2D) -> bool:
         """returns true if all elements of current array and another array are equal and dimensions are equal"""
-        if self.__num_columns == len(other) and self.__num_rows == len(other[0]):
-            for i in range(self.__num_columns):
-                for j in range(self.__num_rows):
+        if self.__num_columns == len(other[0]) and self.__num_rows == len(other):
+            for i in range(self.__num_rows):
+                for j in range(self.__num_columns):
                     if self[i][j] != other[i][j]:
                         return False
             

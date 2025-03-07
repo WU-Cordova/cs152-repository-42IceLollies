@@ -1,7 +1,7 @@
 # Test starter file
 
-12  #Rows
-7  #Cols
+12  #Cols
+7  #Rows
 
 X...........
 .......X....

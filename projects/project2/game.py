@@ -11,71 +11,87 @@ class Game:
         """Creates a game object to run game of life based on optional starter grid, width and height (without arguments, creates random grid)"""
         self.__width = width
         self.__height = height
+        # object to detect kayboard hits and variable to store most recent key hit (by ASCII Value)
+        self.__kb = KBHit()
+        self.__key = -1
+        self.__automatic = False
+        self.__timeout = -1
+        self.__iteration = 0
+
 
         # Iterates game and asks user if they want to replay when it ends
         while(True):
             # starts grid from file or randomly
             if len(starter_file)==0:
-                self.__grid = Grid([[Cell(random.choice([True, False])) for _ in range(self.__width)] for _ in range(self.__height)])
-            else:
-                self.__grid = Grid([[Cell(starter_file[i][j]) for i in range(self.__height)] for j in range(self.__width)])
+                self.__grid = Grid(0, [[Cell(random.choice([True, False])) for _ in range(self.__width)] for _ in range(self.__height)])
+            else:            
+                self.__grid = Grid(0, [[Cell(starter_file[j][i]) for i in range(self.__width)] for j in range(self.__height)])
             self.__grid.draw()
             self.__animate()
 
-            action = input("Enter 'Q' to quit, or any other key to run again: ")
-            if action == 'Q' or action == 'q':
-                break
+            if not self.__key in (81, 113): print("Press 'Q' to quit, or 'R' to run again: ")
+            replay = False
+            while(not replay):
+                if self.__kb.kbhit():
+                    self.__key = ord(self.__kb.getch())
 
+                # if key is r or R, run again
+                if self.__key in (82, 114):
+                    self.__key = -1
+                    replay = True
+                # if key is q or Q, quit
+                if self.__key in (81, 113):
+                    quit()
+            
+        self.__kb.set_normal_term()
             
 
 
     def __animate(self) -> None:
-        # creates a keyboard hit object to detect key presses
-        kb = KBHit()
         print("Press enter to advance generation \n'A' to enter automatic mode (fast) \n'a' to enter automatic mode (slow) \n'Q' to quit")
 
-        # unicode val of most recently pressed key
-        key = 0
         # if game is in automatic mode and time between animation
-        automatic = False
         timeout = 1
 
         # while not Q or q (quit condition) or stagnated board
-        while key not in (81,113) and not self.__grid.get_stagnate():
+        while self.__key not in (81,113) and not self.__grid.get_stagnate() and self.__iteration < 100:
 
             # reads key and converts to ASCII
-            if kb.kbhit():
-                key = ord(kb.getch())
+            if self.__kb.kbhit():
+                self.__key = ord(self.__kb.getch())
 
                 # if the key is A
-                if key ==65:
+                if self.__key ==65:
                 # sets automatic to True - fast mode
-                    automatic = True
-                    timeout = 0.5
+                    self.__automatic = True
+                    self.__timeout = 0.5
                 #  if the key is a
                 # sets automatic to True - slow mode
-                if key == 97:
-                    automatic = True
-                    timeout = 1
+                if self.__key == 97:
+                    self.__automatic = True
+                    self.__timeout = 1
                 
                 # if enter is hit
                 # sets automatic to false, advances generation
-                if key == 13:
-                    automatic = False
+                if self.__key == 13:
+                    self.__automatic = False
                     self.__grid.new_generation()
                     self.__grid.test_stagnation()
+                    self.__iteration += 1
 
     
             
-            if automatic:
+            if self.__automatic:
                 # automatic mode
                 self.__grid.new_generation()
                 self.__grid.test_stagnation()
-                time.sleep(timeout)
+                self.__iteration += 1
+                time.sleep(self.__timeout)
 
 
 
-        kb.set_normal_term()
+
+        
 
 
 
