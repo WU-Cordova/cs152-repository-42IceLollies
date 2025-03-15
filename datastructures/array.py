@@ -42,8 +42,6 @@ class Array(IArray[T]):
 
 
 
-
-
     @overload
     def __getitem__(self, index: int) -> T: ...
     @overload
