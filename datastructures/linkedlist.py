@@ -226,7 +226,7 @@ class LinkedList[T](ILinkedList[T]):
             self.tail.next = None
             self.length -=1
 
-        return final
+        return final.data
 
 
 
@@ -243,7 +243,7 @@ class LinkedList[T](ILinkedList[T]):
             self.head.previous = None
             self.length -=1
 
-        return first
+        return first.data
     
 
 
@@ -252,7 +252,7 @@ class LinkedList[T](ILinkedList[T]):
     def front(self) -> T:
         """returns the first value from the linked list"""
         self._empty_err()
-        return self.head
+        return self.head.data
 
 
 
@@ -260,7 +260,7 @@ class LinkedList[T](ILinkedList[T]):
     def back(self) -> T:
         """returns the last value from the linked list"""
         self._empty_err()
-        return self.tail
+        return self.tail.data
 
     @property
     def empty(self) -> bool:
@@ -284,7 +284,7 @@ class LinkedList[T](ILinkedList[T]):
         
         return self._traverse_list(item) != None
 
-    def __iter__(self) -> ILinkedList[T]:
+    def __iter__(self) -> ILinkedList[T]: # type: ignore
         """returns an interator for the list"""
         
         curr_node = self.head
