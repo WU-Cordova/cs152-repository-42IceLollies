@@ -10,16 +10,34 @@ from datastructures.linkedlist import LinkedList
 class HashMap(IHashMap[KT, VT]):
 
     def __init__(self, number_of_buckets=7, load_factor=0.75, custom_hash_function: Optional[Callable[[KT], int]]=None) -> None:
-        raise NotImplementedError("HashMap.__init__() is not implemented yet.")
+        self.__buckets = Array([LinkedList(data_type=tuple) for _ in range(number_of_buckets)], data_type=LinkedList)
+        self.__load_factor = load_factor
+        self.__hash_func = custom_hash_function if not custom_hash_function else self._default_hash_function
+
+    # array of linked lists of tuples (key, val)
+    # hash func should be class var
+    # get key value pair func
+
+    def __find_key_val_pair(self, key:KT)-> tuple:
+        """returns the tuple of a key-value-pair if it exists in the buckets, otherwise returns None"""
+        # finds the bucket the value would exist in 
+        bucket = self.__hash_func(key)%len(self.__buckets)
+        for tup in bucket:
+            if tup[0] == key:
+                return tup
+        
+        raise ValueError("There is no such object in hashmap.")
+        
 
     def __getitem__(self, key: KT) -> VT:
-        raise NotImplementedError("HashMap.__getitem__() is not implemented yet.")
+        # returns the value associated with a key, raising an error if the key is not found
+        return self.__find_key_val_pair(key)[0]
 
     def __setitem__(self, key: KT, value: VT) -> None:        
         raise NotImplementedError("HashMap.__setitem__() is not implemented yet.")
 
     def keys(self) -> Iterator[KT]:
-        raise
+        raise NotImplementedError("Bleh")
     
     def values(self) -> Iterator[VT]:
         raise NotImplementedError("HashMap.values() is not implemented yet.")
