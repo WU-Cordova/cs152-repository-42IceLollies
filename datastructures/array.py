@@ -71,7 +71,9 @@ class Array(IArray[T]):
         else:
             raise TypeError("Index should be an int or a slice")
 
-
+    @property
+    def empty(self):
+        return len(self) == 0
 
 
     def __setitem__(self, index: int, item: T) -> None:

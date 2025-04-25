@@ -190,6 +190,29 @@ class LinkedList[T](ILinkedList[T]):
             self.length -=1
 
 
+        
+    def replace(self, target: T, new_item: T) -> None:
+        """replaces a given value with a new value"""
+        if not isinstance(target, self.data_type):
+            raise TypeError("Target is not of correct data_type for linked list")
+        if not isinstance(new_item, self.data_type):
+            raise TypeError("Item is not of correct data_type for linked list")
+        
+        item = self._traverse_list(target)
+
+        if item == self.tail:
+            previous = item.previous.data
+            self.remove(target)
+            self.insert_after(previous, new_item)
+
+        else:
+            next = item.next.data
+            self.remove(target)
+            self.insert_before(next, new_item)
+
+        
+
+
 
 
 
