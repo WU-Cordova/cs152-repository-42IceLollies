@@ -181,7 +181,13 @@ class Array(IArray[T]):
         for element in self._elements:
             yield element
     
+    def index(self, target:T) -> int:
+        """returns the index of a targetted value"""
+        for el in range(len(self)):
+            if self[el] == target:
+                return el
 
+        return -1
 
 
     def __reversed__(self) -> Iterator[T]:

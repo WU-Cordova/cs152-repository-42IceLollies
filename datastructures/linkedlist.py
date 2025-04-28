@@ -203,7 +203,7 @@ class LinkedList[T](ILinkedList[T]):
         if item == self.tail:
             previous = item.previous.data
             self.remove(target)
-            self.insert_after(previous, new_item)
+            self.insert_after(previous, new_item) 
 
         else:
             next = item.next.data
