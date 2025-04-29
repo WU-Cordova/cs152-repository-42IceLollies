@@ -4,19 +4,13 @@ from datastructures.linkedlist import LinkedList
 
 class CustomerOrder:
     
-    def __init__(self, name: str, drinks: list[Drink] = []) -> None:
+    def __init__(self, name: str) -> None:
         """Initiates a Customer's order, starting with the first provided information (Name or drink)"""
         self._name: str = name
-        
-        if not len(drinks) == 0: 
-            self._drinks: LinkedList[Drink] = LinkedList.from_sequence()
-        else:
-            self._drinks: LinkedList[Drink] = LinkedList(data_type=Drink)
-
+     
+        self._drinks: LinkedList[Drink] = LinkedList(data_type=Drink)
         self._price: float = 0
 
-        for drink in self._drinks:
-            self._price += drink.price
 
     
     def add_drink(self, new_drink: Drink, customizations: str)-> None:
@@ -37,7 +31,7 @@ class CustomerOrder:
     
 
 
-    def __init__(self):
+    def __iter__(self):
         """iterates through the drinks in the order"""
         for drink in self._drinks:
             yield drink

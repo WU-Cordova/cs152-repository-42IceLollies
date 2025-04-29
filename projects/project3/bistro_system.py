@@ -90,7 +90,7 @@ class Bistro_System:
         """marks the first first order in the queue as completed (moves it to completed orders)"""
         order = self._open_orders.dequeue()
         for drink in order:
-            self._finished_orders.add(drink)
+            self._finished_orders.add(drink.name)
         print(f"\nOrder for {order.name} completed!")
         time.sleep(3)
 
@@ -99,13 +99,12 @@ class Bistro_System:
     def print_day_stats(self) -> None:
         """Prints out a list of the drinks sold for a day and the money made"""
         total = 0
-        print("End of Day Sales Report \n\n  Drinks Sold:\n")
-        for drink_tup in self._finished_orders:
-            print(f"{drink_tup[0].name}  x{drink_tup[1]} --------- {"{:.2f}".format(drink_tup[0].price*drink_tup[1])}" )
-            total += drink_tup[0].price
-        print(f"\nTotal: ${"{:.2f}".format(total)}")
-
-
-
+        print("\n\n\nEnd of Day Sales Report \n\nDrinks Sold:\n")
+        for drink_tup in self._finished_orders.distinct_items():
+            units = self._finished_orders.count(drink_tup)
+            unit_price = bistro_menu.order(drink_tup).price
+            print(f"{drink_tup}  x{units} --------- {"{:.2f}".format(unit_price*units)}" )
+            total += unit_price*units
+        print(f"\nTotal: ${"{:.2f}".format(total)}\n\n")
 
         input("Press ENTER to return to the main menu.")
