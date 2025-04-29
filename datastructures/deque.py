@@ -109,6 +109,12 @@ class Deque[T](IQueue[T]):
         """
         return len(self.deque)
     
+
+    def __iter__(self):
+        for item in self.deque:
+            yield item
+    
+
     def __contains__(self, item: T) -> bool:
         """
         Checks if an item exists in the deque.
