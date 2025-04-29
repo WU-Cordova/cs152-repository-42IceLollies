@@ -180,6 +180,8 @@ class Array(IArray[T]):
         """sequentially returns the elements of array"""
         for element in self._elements:
             yield element
+
+
     
     def index(self, target:T) -> int:
         """returns the index of a targetted value"""

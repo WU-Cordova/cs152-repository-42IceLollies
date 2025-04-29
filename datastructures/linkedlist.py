@@ -55,14 +55,16 @@ class LinkedList[T](ILinkedList[T]):
         # if the list is empty - head and tail equal item
         if self.empty:
             self.head = self.tail = LinkedList.Node(data = item)
+            self.length = 1
 
         # else, Next value of current tail = item, new item becomes tail
         else: 
             item_node = LinkedList.Node(data = item, previous = self.tail)
             self.tail.next = item_node
             self.tail = item_node
+            self.length += 1
             
-        self.length += 1
+        
 
 
 
@@ -178,7 +180,7 @@ class LinkedList[T](ILinkedList[T]):
         if self.length == 1:
             self.clear()
         # if instance is at the head (no previous)
-        if instance.previous == None:
+        elif instance.previous == None:
             self.pop_front()
         # if instance is at tail (no next)
         elif instance.next == None:
